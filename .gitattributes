@@ -1,0 +1,16 @@
+# Atur  file teks agar gunakan LF (Line Feed)
+* text=auto eol=lf
+
+# File-file konfigurasi
+*.sh text eol=lf
+*.xml text eol=lf
+*.conf text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.properties text eol=lf
+
+# Jangan konversi file biner
+*.png binary
+*.jpg binary
+*.pdf binary
+*.jar binary

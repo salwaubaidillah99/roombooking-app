@@ -18,10 +18,12 @@ public class RoomRepository {
     EntityManager entityManager;
 
     public Map<String, Object> insertRoom (Room room){
-        Query query = entityManager.createNativeQuery("SELECT * FROM master_booking.create_room(?1, ?2, ?3)");
+        Query query = entityManager.createNativeQuery("SELECT * FROM master_booking.create_room(?1, ?2, ?3, ?4, ?5)");
         query.setParameter(1, room.getRoomName());
         query.setParameter(2, room.getLocation());
         query.setParameter(3, room.getCapacity());
+        query.setParameter(4, room.getStatus());
+        query.setParameter(5, room.getFasilities());
 
         Object[] result = (Object[]) query.getSingleResult();
 
@@ -32,6 +34,8 @@ public class RoomRepository {
         data.put("capacity", result[3]);
         data.put("status", result[4]);
         data.put("created_at", result[5]);
+        data.put("fasilities", result[6]);
+
 
         return data;
     }
@@ -47,29 +51,33 @@ public class RoomRepository {
         data.put("room_name", result[1]);
         data.put("location", result[2]);
         data.put("capacity", result[3]);
-        data.put("status", result[4]);
-        data.put("created_at", result[5]);
+        data.put("fasilities", result[4]);
+        data.put("status", result[5]);
+//        data.put("created_at", result[6]);
 
         return data;
     }
+
     public List<Map<String, Object>> getAllRooms() {
         Query query = entityManager.createNativeQuery("SELECT * FROM master_booking.get_room()");
         List<Object[]> results = query.getResultList();
 
-        List<Map<String, Object>> roomList = new ArrayList<>();
+        List<Map<String, Object>> data = new ArrayList<>();
         for (Object[] row : results) {
             Map<String, Object> room = new HashMap<>();
             room.put("room_id", row[0]);
             room.put("room_name", row[1]);
             room.put("location", row[2]);
             room.put("capacity", row[3]);
-            room.put("status", row[4]);
-            room.put("created_at", row[5]);
-            roomList.add(room);
+            room.put("fasilities", row[4]);
+            room.put("status", row[5]);
+            room.put("created_at", row[6]);
+            data.add(room);
         }
 
-        return roomList;
+        return data;
     }
+
     public boolean deleteRoom(int roomId) {
         Query query = entityManager.createNativeQuery("SELECT * FROM master_booking.delete_room_by_id(?1)");
         query.setParameter(1, roomId);

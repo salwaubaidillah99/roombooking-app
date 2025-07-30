@@ -1,0 +1,23 @@
+filebeat.inputs:
+  - type: filestream
+    id: quarkus-json-logs
+    paths:
+      - /app/logs/app-log.json
+    parsers:
+      - ndjson:
+          overwrite_keys: true
+    fields:
+      source: quarkus
+    fields_under_root: true
+    ignore_older: 72h
+
+output.logstash:
+  hosts: ["logstash:5000"]
+
+processors:
+  - add_host_metadata: ~
+  - add_docker_metadata: ~
+  - add_locale: ~
+    logging.level: debug
+
+

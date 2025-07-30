@@ -5,6 +5,7 @@ import com.example.room.services.RoomService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.Map;
 
@@ -17,24 +18,24 @@ public class RoomResource {
     RoomService roomService;
 
     @POST
-    public Map<String, Object> insertRoom(Room room){
+    public Response insertRoom(Room room){
         return roomService.insertRoom(room);
     }
 
     @GET
     @Path("/{id}")
-    public Map<String, Object> getRoomById(@PathParam("id") int id) {
+    public Response getRoomById(@PathParam("id") int id) {
         return roomService.getRoomById(id);
     }
 
     @GET
-    public Map<String, Object> getAllRooms(){
+    public Response getAllRooms(){
         return roomService.getAllRooms();
     }
 
     @DELETE
     @Path("/{id}")
-    public Map<String, Object> deleteRoomById(@PathParam("id") int id) {
+    public Response deleteRoomById(@PathParam("id") int id) {
         return roomService.deleteRoom(id);
     }
 

@@ -8,6 +8,16 @@ public class Room {
     private String location;
     private Integer capacity;
     private String status;
+    private String fasilities;
+
+    public String getFasilities() {
+        return fasilities;
+    }
+
+    public void setFasilities(String fasilities) {
+        this.fasilities = fasilities;
+    }
+
     private LocalDateTime createdAt;
 
     public Integer getId() {
