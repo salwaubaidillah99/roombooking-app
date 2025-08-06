@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 
 public class Departement {
 
-    private Integer id;
+    private Integer departement_id;
     private String departementName;
     private LocalDateTime createdAt;
 
 
     public Integer getId() {
-        return id;
+        return departement_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Integer departement_id) {
+        this.departement_id = departement_id;
     }
 
     public String getDepartementName() {
