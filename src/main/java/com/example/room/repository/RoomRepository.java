@@ -4,12 +4,10 @@ import com.example.room.entity.Room;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ApplicationScoped
 public class RoomRepository {
@@ -17,28 +15,38 @@ public class RoomRepository {
     @Inject
     EntityManager entityManager;
 
-    public Map<String, Object> insertRoom (Room room){
-        Query query = entityManager.createNativeQuery("SELECT * FROM master_booking.create_room(?1, ?2, ?3, ?4, ?5)");
+    public Map<String, Object> insertRoom(Room room) {
+        Query query = entityManager.createNativeQuery(
+                "SELECT * FROM master_booking.create_room(?1, ?2, ?3, ?4, ?5)"
+        );
         query.setParameter(1, room.getRoomName());
         query.setParameter(2, room.getLocation());
         query.setParameter(3, room.getCapacity());
         query.setParameter(4, room.getStatus());
         query.setParameter(5, room.getFasilities());
 
-        Object[] result = (Object[]) query.getSingleResult();
+        try {
+            List<Object[]> resultList = query.getResultList();
+            if (resultList.isEmpty()) {
+                throw new NoResultException("No room created");
+            }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("room_id", result[0]);
-        data.put("room_name", result[1]);
-        data.put("location", result[2]);
-        data.put("capacity", result[3]);
-        data.put("status", result[4]);
-        data.put("created_at", result[5]);
-        data.put("fasilities", result[6]);
-
-
-        return data;
+            Object[] result = resultList.get(0);  // ambil row pertama
+            Map<String, Object> data = new HashMap<>();
+            data.put("room_id", result[0]);
+            data.put("room_name", result[1]);
+            data.put("location", result[2]);
+            data.put("capacity", result[3]);
+            data.put("status", result[4]);
+            data.put("created_at", result[5]);
+            data.put("updated_at", result[6]);
+            data.put("fasilities", result[7]);
+            return data;
+        } catch (NoResultException e) {
+            return Collections.emptyMap();
+        }
     }
+
 
     public Map<String, Object> getRoomById(int id) {
         Query query = entityManager.createNativeQuery("SELECT * FROM master_booking.get_room_by_id(?1)");
@@ -83,6 +91,36 @@ public class RoomRepository {
         query.setParameter(1, roomId);
 
         return (Boolean) query.getSingleResult();
+    }
+
+    public Map<String, Object> updateRoom(Room room) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM master_booking.update_room(?1, ?2, ?3, ?4, ?5, ?6)");
+        query.setParameter(1, room.getRoom_id());
+        query.setParameter(2, room.getRoomName());
+        query.setParameter(3, room.getLocation());
+        query.setParameter(4, room.getCapacity());
+        query.setParameter(5, room.getStatus());
+        query.setParameter(6, room.getFasilities());
+
+        try {
+            List<Object[]> results = query.getResultList();
+            if (results.isEmpty()) {
+                return Collections.emptyMap();
+            }
+
+            Object[] result = results.get(0);
+            Map<String, Object> data = new HashMap<>();
+            data.put("room_id", result[0]);
+            data.put("room_name", result[1]);
+            data.put("location", result[2]);
+            data.put("capacity", result[3]);
+            data.put("status", result[4]);
+            data.put("updated_at", result[5]);
+            data.put("fasilities", result[6]);
+            return data;
+        } catch (NoResultException e) {
+            return Collections.emptyMap();
+        }
     }
 
 

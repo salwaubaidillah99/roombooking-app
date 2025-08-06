@@ -90,4 +90,22 @@ public class RoomService {
         }
     }
 
+    public Response updateRoom(Room room) {
+//        Map<String, Object> response = new HashMap<>();
+        LOGGER.info("START edited Room: " + room);
+
+        try {
+            Map<String, Object> data = roomRepository.updateRoom(room);
+            LOGGER.info("Room created successfully: " + data);
+
+            ApiResponse<Map<String, Object>> res = new ApiResponse<>("Success Room edited", 1, data);
+            return Response.status(Response.Status.CREATED).entity(res).build();
+        } catch (PersistenceException e) {
+            LOGGER.error("Failed to edited room", e);
+            ApiResponse<Void> res = new ApiResponse<>("Failed to edited room", 0, null);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(res).build();
+        }
+    }
+
+
 }

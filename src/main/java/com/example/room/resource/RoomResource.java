@@ -39,5 +39,13 @@ public class RoomResource {
         return roomService.deleteRoom(id);
     }
 
+    @PUT
+    public Response updateRoom(Room room){
+        return roomService.updateRoom(room);
+    }
+
+
+
+
 
 }

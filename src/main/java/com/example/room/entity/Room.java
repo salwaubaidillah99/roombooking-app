@@ -3,12 +3,22 @@ package com.example.room.entity;
 import java.time.LocalDateTime;
 
 public class Room {
-    private Integer id;
+    private Integer room_id;
     private String roomName;
     private String location;
     private Integer capacity;
     private String status;
     private String fasilities;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public String getFasilities() {
         return fasilities;
@@ -18,14 +28,13 @@ public class Room {
         this.fasilities = fasilities;
     }
 
-    private LocalDateTime createdAt;
 
-    public Integer getId() {
-        return id;
+    public Integer getRoom_id() {
+        return room_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRoom_id(Integer room_id) {
+        this.room_id = room_id;
     }
 
     public String getRoomName() {
@@ -67,4 +76,7 @@ public class Room {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+
+
 }
